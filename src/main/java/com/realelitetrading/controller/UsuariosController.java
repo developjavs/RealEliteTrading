@@ -7,12 +7,12 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,15 +59,12 @@ public class UsuariosController {
 			obj = service.save(dao);
 
 			//Enviamos correo con la contraseña
-//			Utils.sendEmail(dao.getCorreo(), name.toString(), pass);
-//			SimpleMailMessage message = new SimpleMailMessage();
-//			message.setFrom("realelitetreadin@gmail.com");
-//			message.setTo(dao.getCorreo());
-//			message.setSubject("Acceso Portal");
-//			message.setText("Hola, "+name.toString()+"\n\nRecibimos la solicitud creacion de tu cuenta con exito!\n\nLa contraseña para acceder a tu cuenta es: "+pass);
 			emailService.send("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "+name.toString()+"\n\nRecibimos la solicitud creacion de tu cuenta con exito!\n\nLa contraseña para acceder a tu cuenta es: "+pass);
 			
-			return new ResponseEntity<>(obj, HttpStatus.CREATED);
+			if(obj != null)
+				return new ResponseEntity<>(obj, HttpStatus.CREATED);
+			else
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -84,4 +81,18 @@ public class UsuariosController {
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 		}
 	}
+
+	@ResponseBody
+	@GetMapping("/login")
+	public ResponseEntity<Object> login(@RequestParam String user, @RequestParam String pass) {
+		try {
+			Usuario instance = service.login(user, Utils.encrypt(pass));
+			return new ResponseEntity<>(instance, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+		}
+	}
+
+	
 }

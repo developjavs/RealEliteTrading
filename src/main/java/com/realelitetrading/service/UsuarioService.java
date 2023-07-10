@@ -30,18 +30,23 @@ public class UsuarioService {
 	}
 
 	public Usuario save(UsuarioDao dao) {
-		Optional<Rol> rol = rolRepository.findById(dao.getIdRol());
-		Usuario instance = new Usuario();
-		instance.setNivel(dao.getIdNivel());
-		instance.setNombre(dao.getNombre());
-		instance.setAp(dao.getAp());
-		instance.setAm(dao.getAm());
-		instance.setFechaNac(dao.getFechaNac());
-		instance.setEstatus(0);
-		instance.setCorreo(dao.getCorreo());
-		instance.setPassword(dao.getPassword());
-		instance.setRol(rol.get());
-		return repository.save(instance);
+		Usuario user = repository.findByCorreo(dao.getCorreo());
+		if(user == null) {
+			Optional<Rol> rol = rolRepository.findById(dao.getIdRol());
+			Usuario instance = new Usuario();
+			instance.setNivel(dao.getIdNivel());
+			instance.setNombre(dao.getNombre());
+			instance.setAp(dao.getAp());
+			instance.setAm(dao.getAm());
+			instance.setFechaNac(dao.getFechaNac());
+			instance.setEstatus(0);
+			instance.setCorreo(dao.getCorreo());
+			instance.setPassword(dao.getPassword());
+			instance.setRol(rol.get());	
+			return repository.save(instance);
+		}else{
+			return null;
+		}
 	}
 
 	public void update(UsuarioDao dao) {
@@ -54,5 +59,13 @@ public class UsuarioService {
 		instance.setEstatus(dao.getEstatus());
 		instance.setCorreo(dao.getCorreo());
 		repository.save(instance);
+	}
+
+	public Usuario login(String user, String pass) {
+		Usuario instance = repository.findByCorreoAndPassword(user, pass);
+		if(instance != null)
+			return instance;
+
+		return new Usuario();
 	}
 }

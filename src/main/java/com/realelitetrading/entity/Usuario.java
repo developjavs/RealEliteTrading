@@ -14,11 +14,13 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "usuarios")
 @Getter
 @Setter
+@ToString
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +30,7 @@ public class Usuario implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "id_rol")
+	@JoinColumn(name = "id_rol", nullable = false, updatable = false)
 	private Rol rol;
 
 	@Column(name = "id_nivel")
