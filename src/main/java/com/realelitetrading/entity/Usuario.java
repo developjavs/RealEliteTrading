@@ -30,7 +30,7 @@ public class Usuario implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "id_rol", nullable = false, updatable = false)
+	@JoinColumn(name = "id_rol")
 	private Rol rol;
 
 	@Column(name = "id_nivel")

@@ -64,11 +64,24 @@ public class UsuarioService {
 
 	public Usuario login(String user, String pass) {
 		Usuario instance = repository.findByCorreoAndPassword(user, pass);
-		if(instance != null) {
-			System.err.println("Entra if");
+		if(instance != null)
 			return instance;
-		}
 
 		return new Usuario();
+	}
+
+	public boolean validaCuenta(String email) {
+		Usuario user = repository.findByCorreo(email);
+		if(user != null) {
+			if(user.getEstatus() == 1){
+				return true;
+			}else{
+				user.setEstatus(1);
+				repository.save(user);
+				return false;
+			}
+		}else{
+			return false;
+		}
 	}
 }

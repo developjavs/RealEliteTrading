@@ -59,15 +59,17 @@ public class UsuariosController {
 			obj = service.save(dao);
 
 			if(obj != null)
-				emailService.send("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "+name.toString()+"\n\nRecibimos la solicitud creacion de tu cuenta con exito!\n\nLa contraseña para acceder a tu cuenta es: "+pass);
+				emailService.sendWithHTML("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "
+						+name.toString()+"<br /><br />Recibimos la solicitud creacion de tu cuenta con exito!<br />La contraseña para acceder a tu cuenta es: <b>"
+						+pass+"</b><br /><br /><a href='http://www.realelitetrading.com/verificarCuenta.html?email="+dao.getCorreo()+"'>Verficar cuenta</a>");
 			
 			if(obj != null)
-				return new ResponseEntity<>(obj, HttpStatus.CREATED);
+				return new ResponseEntity<>(obj, HttpStatus.CREATED);//201
 			else
-				return new ResponseEntity<>(HttpStatus.CONFLICT);
+				return new ResponseEntity<>(HttpStatus.CONFLICT);//409
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//400
 		}
 	}
 
@@ -90,7 +92,22 @@ public class UsuariosController {
 			return new ResponseEntity<>(instance, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);//203
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("/valida-cuenta")
+	public ResponseEntity<Object> validaCuenta(@RequestParam String email) {
+		try {
+			boolean estatus = service.validaCuenta(email);
+			if(estatus)
+				return new ResponseEntity<>(HttpStatus.CONTINUE);//100
+			else
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);//202
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//400
 		}
 	}
 
