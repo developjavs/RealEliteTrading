@@ -102,7 +102,7 @@ public class UsuariosController {
 		try {
 			boolean estatus = service.validaCuenta(email);
 			if(estatus)
-				return new ResponseEntity<>(HttpStatus.CONTINUE);//100
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);//404
 			else
 				return new ResponseEntity<>(HttpStatus.ACCEPTED);//202
 		} catch (Exception e) {
