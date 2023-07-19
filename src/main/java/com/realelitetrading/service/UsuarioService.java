@@ -58,13 +58,16 @@ public class UsuarioService {
 		instance.setFechaNac(dao.getFechaNac());
 		instance.setEstatus(dao.getEstatus());
 		instance.setCorreo(dao.getCorreo());
+		instance.setPassword(dao.getPassword());
 		repository.save(instance);
 	}
 
 	public Usuario login(String user, String pass) {
 		Usuario instance = repository.findByCorreoAndPassword(user, pass);
-		if(instance != null)
+		if(instance != null) {
+			System.err.println("Entra if");
 			return instance;
+		}
 
 		return new Usuario();
 	}

@@ -58,8 +58,8 @@ public class UsuariosController {
 			dao.setPassword(Utils.encrypt(pass));
 			obj = service.save(dao);
 
-			//Enviamos correo con la contraseña
-			emailService.send("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "+name.toString()+"\n\nRecibimos la solicitud creacion de tu cuenta con exito!\n\nLa contraseña para acceder a tu cuenta es: "+pass);
+			if(obj != null)
+				emailService.send("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "+name.toString()+"\n\nRecibimos la solicitud creacion de tu cuenta con exito!\n\nLa contraseña para acceder a tu cuenta es: "+pass);
 			
 			if(obj != null)
 				return new ResponseEntity<>(obj, HttpStatus.CREATED);
