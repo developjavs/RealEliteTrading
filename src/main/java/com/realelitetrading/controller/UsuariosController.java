@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import com.realelitetrading.service.EmailService;
 import com.realelitetrading.service.UsuarioService;
 import com.realelitetrading.utils.Utils;
 
+//@CrossOrigin
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuariosController {
@@ -58,10 +60,19 @@ public class UsuariosController {
 			dao.setPassword(Utils.encrypt(pass));
 			obj = service.save(dao);
 
-			if(obj != null)
-				emailService.sendWithHTML("realelitetreadin@gmail.com", dao.getCorreo(), "Acceso Portal", "Hola, "
-						+name.toString()+"<br /><br />Recibimos la solicitud creacion de tu cuenta con exito!<br />La contraseña para acceder a tu cuenta es: <b>"
-						+pass+"</b><br /><br /><a href='http://www.realelitetrading.com/verificarCuenta.html?email="+dao.getCorreo()+"'>Verficar cuenta</a>");
+			if (obj != null)
+				emailService.sendWithHTML("realelitetreadin@gmail.com", dao.getCorreo(),
+						"Confirme su dirección de correo electrónico",
+						"<div style='font-family: sans-serif; font-size: medium;background: #f8f8f8;padding: 1rem;border-radius: 5px;font-size: 1rem;'>"
+						+ "Hola, " + name.toString()
+								+ "<br /><br />Gracias por crear una cuenta con Real Elite Trading!<br />La contraseña para acceder a Tu cuenta es: <b>" + pass + "</b>"
+								+ "<br /><br />"
+								+ "Para usar tu cuenta, primero tendrás que confirmar la dirección de correo electrónico haciendo clic en el siguiente botón."
+								+ "<br />"
+								+ "<a "
+								+ "style='height: auto;background: linear-gradient(to right,#820840,#000);border: none;color: #fff;padding: 8px 20px;border-radius: 4px;display: inline-block;margin: 20px 0px 20px 5px;text-decoration: none;' "
+								+ "href='http://www.realelitetrading.com/verificarCuenta.html?email="+dao.getCorreo()+"'>VERIFICAR CUENTA</a>"
+								+ "</div>");
 			
 			if(obj != null)
 				return new ResponseEntity<>(obj, HttpStatus.CREATED);//201
