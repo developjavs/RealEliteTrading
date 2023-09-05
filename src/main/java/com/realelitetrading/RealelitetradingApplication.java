@@ -18,6 +18,8 @@ public class RealelitetradingApplication {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.addAllowedOrigin("http://127.0.0.1:5500"); // Reemplaza con tu origen permitido
+        corsConfig.addAllowedOrigin("http://127.0.0.1:5501");
+        corsConfig.addAllowedOrigin("https://cdn.jsdelivr.net");
         corsConfig.addAllowedOrigin("http://www.realelitetrading.com/");
         corsConfig.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, PUT, etc.)
         corsConfig.addAllowedHeader("*"); // Permitir todos los encabezados

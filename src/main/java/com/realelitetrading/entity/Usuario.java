@@ -46,10 +46,16 @@ public class Usuario implements Serializable {
 
 	@Column(name = "fecha_nacimiento")
 	private Date fechaNac;
+	
+	private Date registro;
 
 	private int estatus;
 
 	private String correo;
+	
+	private String telefono;
+	
+	private String cod_pais;
 
 	private String password;
 

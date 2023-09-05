@@ -41,6 +41,8 @@ public class UsuarioService {
 			instance.setFechaNac(dao.getFechaNac());
 			instance.setEstatus(0);
 			instance.setCorreo(dao.getCorreo());
+			instance.setTelefono(dao.getTelefono());
+			instance.setCod_pais(dao.getCod_pais());
 			instance.setPassword(dao.getPassword());
 			instance.setRol(rol.get());	
 			return repository.save(instance);
@@ -58,6 +60,8 @@ public class UsuarioService {
 		instance.setFechaNac(dao.getFechaNac());
 		instance.setEstatus(dao.getEstatus());
 		instance.setCorreo(dao.getCorreo());
+		instance.setTelefono(dao.getTelefono());
+		instance.setCod_pais(dao.getCod_pais());
 		instance.setPassword(dao.getPassword());
 		repository.save(instance);
 	}
